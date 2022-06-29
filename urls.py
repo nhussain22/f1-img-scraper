@@ -9,8 +9,6 @@ import re
 import requests
 import os.path
 
-
-
 def get_season_races() -> List[str]:
     """
 
@@ -39,30 +37,57 @@ def get_season_races() -> List[str]:
 
 ################################################################################
 
-def create_race_folders(links):
+def retreive_names_for_folder(links)-> List[str]:
+    """
+
+    DESCRIPTION:
+        Returns a list of the folder names based on the race
+
+    PARARMETERS:
+        links (str): Takes in the indiv race links from the get_season_races() function.
+
+    RETURNS:
+        race_folder_names (str): List of folder names to be created
+    
+    EXAMPLE: 
+        Enter link: ['f1', .... ,'canadian']
+    
+    """
+    race_folder_names = []
+
     for link in links:
         base_link = link
         name = re.split(r'\s|-', str(base_link))
-        title = [name[-3]]
+        title = name[-3]
+        
+        race_folder_names.append(title)
 
-        for name in title:
-            curent_dir = os.getcwd()
-            check_dir = os.getcwd() + "/" + name
-
-
-            if not os.path.exists(check_dir):
-                os.mkdir(curent_dir+ "/" + name)
-
-            SAVE_FOLDER = curent_dir + "/" + name
+    return race_folder_names
 
 
+def create_folders(folder_names):
+    pass 
+
+# curent_dir = os.getcwd()
+# print(curent_dir)
+# check_dir = os.getcwd() + "/" + str(name)
+# print(check_dir)
+
+# if not os.path.exists(check_dir):
+#     os.mkdir(curent_dir+ "/" + str(name))
+
+# SAVE_FOLDER = curent_dir + "/" + str(name)
 
 
-# # Create connection and fetch items
+
+################################################################################
+
+
+# Create connection and fetch items
 # headers = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.63 Safari/537.36'}
 # r = requests.get(base_link, headers=headers)
 # soup = BeautifulSoup(r.content, 'lxml')
-
+# links = get_season_races() 
 # links = set(e.get('href') for e in soup.select('.gallery-item a'))
 
 # # Create new list for links
