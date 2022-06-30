@@ -1,6 +1,7 @@
 from fileinput import filename
 from re import A
 from tkinter import image_names
+from webbrowser import get
 from tqdm import tqdm
 from bs4 import BeautifulSoup
 from typing import List
@@ -21,10 +22,10 @@ def get_season_races() -> List[str]:
         user_input (str): URL from user.
 
     RETURNS:
-        race_links (str): List of URLS which have been fetched
+        race_links (str): List of URLS which have been fetched.
     
     EXAMPLE: 
-        Enter link: https://www.f1-fansite.com/f1-wallpapers/
+        Enter link: https://www.f1-fansite.com/f1-wallpapers/.
     
     """
 
@@ -42,16 +43,16 @@ def get_season_races() -> List[str]:
 def retreive_names_for_folder(links)-> List[str]:
     """
     DESCRIPTION:
-        Returns a list of the folder names based on the race
+        Returns a list of the folder names based on the race.
 
     PARARMETERS:
         links (str): Takes in the indiv race links from the get_season_races() function.
 
     RETURNS:
-        race_folder_names (str): List of folder names to be created
+        race_folder_names (str): List of folder names to be created.
     
     EXAMPLE: 
-        List returned (str): ['f1', .... ,'canadian']
+        List returned (str): ['f1', .... ,'canadian'].
     
     """
     race_folder_names = []
@@ -69,16 +70,16 @@ def retreive_names_for_folder(links)-> List[str]:
 def create_folders(folder_names):
     """
     DESCRIPTION:
-        Creates folders based on names given from the Folder_names list
+        Creates folders based on names given from the Folder_names list.
 
     PARARMETERS:
-        folder_names (List, str): Takes in the indiv race names from the retreive_names_for_folder() function.
+        folder_names str(List): Takes in the indiv race names from the retreive_names_for_folder() function.
 
     RETURNS:
-         (str): Creates folders with names from list in current dir
+         (str): Creates folders with names from list in current dir.
     
     EXAMPLE: 
-        List returned (str): australian_01, australian_02
+        List returned (str): australian_01, australian_02.
     
     """
     curent_dir = os.getcwd()
@@ -101,18 +102,19 @@ def create_folders(folder_names):
 # links = get_season_races() 
 # links = set(e.get('href') for e in soup.select('.gallery-item a'))
 
-# # Create new list for links
-# a_link = [link for link in links]
+a_link = get_season_races()
 
-# # Create connection and download
-# for link in tqdm(a_link):
-#     respone = requests.get(link, headers=headers)
+# Create new list for links
 
-#     file_name = link.split('/')[-1]    
-#     image_name = SAVE_FOLDER + '/' + file_name
+# Create connection and download
+for link in tqdm(a_link):
+    respone = requests.get(link)
 
-#     with open(image_name, 'wb') as file:
-#         file.write(respone.content)
+    file_name = link.split('/')[-1]    
+    image_name = SAVE_FOLDER + '/' + file_name
+
+    with open(image_name, 'wb') as file:
+        file.write(respone.content)
 
 # user_input = input("Please enter the F1: ")
 
