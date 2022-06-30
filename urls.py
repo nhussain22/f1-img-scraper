@@ -4,14 +4,16 @@ from tkinter import image_names
 from tqdm import tqdm
 from bs4 import BeautifulSoup
 from typing import List
+from collections import Counter
+
 
 import re
 import requests
 import os.path
+import os
 
 def get_season_races() -> List[str]:
     """
-
     DESCRIPTION:
         Returns the links of every race category specified from the users input.
 
@@ -39,7 +41,6 @@ def get_season_races() -> List[str]:
 
 def retreive_names_for_folder(links)-> List[str]:
     """
-
     DESCRIPTION:
         Returns a list of the folder names based on the race
 
@@ -50,7 +51,7 @@ def retreive_names_for_folder(links)-> List[str]:
         race_folder_names (str): List of folder names to be created
     
     EXAMPLE: 
-        Enter link: ['f1', .... ,'canadian']
+        List returned (str): ['f1', .... ,'canadian']
     
     """
     race_folder_names = []
@@ -66,18 +67,28 @@ def retreive_names_for_folder(links)-> List[str]:
 
 
 def create_folders(folder_names):
-    pass 
+    """
+    DESCRIPTION:
+        Creates folders based on names given from the Folder_names list
 
-# curent_dir = os.getcwd()
-# print(curent_dir)
-# check_dir = os.getcwd() + "/" + str(name)
-# print(check_dir)
+    PARARMETERS:
+        folder_names (List, str): Takes in the indiv race names from the retreive_names_for_folder() function.
 
-# if not os.path.exists(check_dir):
-#     os.mkdir(curent_dir+ "/" + str(name))
+    RETURNS:
+         (str): Creates folders with names from list in current dir
+    
+    EXAMPLE: 
+        List returned (str): australian_01, australian_02
+    
+    """
+    curent_dir = os.getcwd()
 
-# SAVE_FOLDER = curent_dir + "/" + str(name)
-
+    for folder_name, count in Counter(folder_names).items():
+        if count == 1:
+            os.makedirs(os.path.join(curent_dir, folder_name), exist_ok=True)
+        else:
+            for index in range(count):
+                os.makedirs(os.path.join(curent_dir, f"{folder_name}_{index+1:02}"), exist_ok=True)
 
 
 ################################################################################
@@ -107,5 +118,8 @@ def create_folders(folder_names):
 
 get_season_races()
 links = get_season_races()
-create_race_folders(links)
+retreive_names_for_folder(links)
+fnames = retreive_names_for_folder(links)
+create_folders(fnames)
+
 
